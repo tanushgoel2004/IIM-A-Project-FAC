@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Button Functionality</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Action Page</h1>
+    <button id="newOrderBtn" onclick="navigateTo('generate_order')">Generate a New Order</button>
+    <button onclick="navigateTo('current_progress')">Current Progress</button>
+    <button id="pauseBtn" onclick="togglePause()">Pause</button>
+
+    <script>
+        let isPaused = false;
+
+        function navigateTo(routeName) {
+            // Redirects using Django URLs
+            window.location.href = `/${routeName}/`;
+        }
+
+        function togglePause() {
+            const newOrderBtn = document.getElementById('newOrderBtn');
+            const pauseBtn = document.getElementById('pauseBtn');
+
+            isPaused = !isPaused;
+            newOrderBtn.disabled = isPaused; // Toggle the disabled state of the "New Order" button
+            pauseBtn.textContent = isPaused ? 'Resume' : 'Pause'; // Update button text
+        }
+    </script>
+</body>
+</html>
