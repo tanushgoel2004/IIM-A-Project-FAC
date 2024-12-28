@@ -122,6 +122,34 @@
         </table>
     </div>
 
+
+    <h3 class="mt-5">Trade Summaries</h3>
+<table class="table table-striped" id="trade-summary-table">
+    <thead>
+        <tr>
+            <th>S.No</th>
+            <th>Buy ID</th>
+            <th>Sell ID</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Timestamp</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for summary in trade_summaries %}
+        <tr>
+            <td>{{ summary.sno }}</td>
+            <td>{{ summary.buy_id }}</td>
+            <td>{{ summary.sell_id }}</td>
+            <td>{{ summary.price }}</td>
+            <td>{{ summary.quantity }}</td>
+            <td>{{ summary.time }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+
     <script>
         // Action Type Field Toggle Logic
         document.getElementById('action_type').addEventListener('change', function () {

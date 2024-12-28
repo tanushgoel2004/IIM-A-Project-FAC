@@ -21,3 +21,15 @@ class Trade(models.Model):
 
     def __str__(self):
         return f"Trade {self.sno} by {self.trader_id} ({self.trade_type}, {self.action_type})"
+
+
+class TradeSummary(models.Model):
+    sno = models.AutoField(primary_key=True)
+    buy_id = models.CharField(max_length=50)
+    sell_id = models.CharField(max_length=50)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    quantity = models.PositiveIntegerField()
+    time = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"TradeSummary {self.sno} (Buy: {self.buy_id}, Sell: {self.sell_id})"
