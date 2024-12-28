@@ -180,7 +180,7 @@ def trade_form(request):
 
             if bs_type == 'B':
                 lowest_sell_price = Trade.objects.filter(bs_type='S').order_by('limit_price').first()
-                if(int(lowest_sell_price.limit_price)<int(limit_price)):
+                if lowest_sell_price and (int(lowest_sell_price.limit_price)<int(limit_price)):
                     buyer_id=trader
                     seller_id=lowest_sell_price.trader_id
                     price=lowest_sell_price.limit_price
@@ -209,7 +209,7 @@ def trade_form(request):
 
             if bs_type == 'S':
                 lowest_sell_price = Trade.objects.filter(bs_type='B').order_by('-limit_price').first()
-                if(int(lowest_sell_price.limit_price)>int(limit_price)):
+                if lowest_sell_price and  (int(lowest_sell_price.limit_price)>int(limit_price)):
                     seller_id=trader
                     buyer_id=lowest_sell_price.trader_id
                     price=lowest_sell_price.limit_price
