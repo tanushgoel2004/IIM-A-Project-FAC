@@ -14,36 +14,32 @@
             color: #343a40;
             font-weight: bold;
         }
-        .filter-section {
-            background: #ffffff;
-            border: 1px solid #dfe3e8;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            margin-bottom: 30px;
-        }
-        .filter-section label {
-            font-weight: 500;
-        }
-        .filter-section .btn {
-            font-weight: bold;
-        }
-        table {
-            background: #ffffff;
+        .buy-orders, .sell-orders, .trade-summary {
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
         }
-        table th {
+        .buy-orders {
             background: #007bff;
             color: #ffffff;
+        }
+        .sell-orders {
+            background: #dc3545;
+            color: #ffffff;
+        }
+        .trade-summary {
+            background: #28a745;
+            color: #ffffff;
+        }
+        table th {
             font-weight: 600;
+            text-align: center;
         }
         table tbody tr:hover {
-            background-color: #f1f5fb;
+            background-color: rgba(255, 255, 255, 0.2);
         }
-        .text-center {
-            margin-bottom: 20px;
+        .col-md-4 {
+            padding: 0 10px;
         }
         @media (max-width: 768px) {
             .row > div {
@@ -56,74 +52,77 @@
     <div class="container mt-5">
         <h2 class="text-center">LOG ORDER BOOK</h2>
 
-        <!-- Filters Section -->
-        <div class="filter-section">
-            <form method="GET" class="row g-3">
-                <div class="col-md-4">
-                    <label for="bs_type" class="form-label">Buy/Sell Type:</label>
-                    <select name="bs_type" id="bs_type" class="form-select">
-                        <option value="All" {% if bs_type_filter == 'All' %}selected{% endif %}>All</option>
-                        <option value="B" {% if bs_type_filter == 'B' %}selected{% endif %}>Buy</option>
-                        <option value="S" {% if bs_type_filter == 'S' %}selected{% endif %}>Sell</option>
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label for="trader_id" class="form-label">Trader ID:</label>
-                    <select name="trader_id" id="trader_id" class="form-select">
-                        <option value="All" {% if trader_filter == 'All' %}selected{% endif %}>All</option>
-                        {% for trader_id in trader_ids %}
-                        <option value="{{ trader_id }}" {% if trader_filter == trader_id %}selected{% endif %}>
-                            {{ trader_id }}
-                        </option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-md-4">
-                    <label class="form-label d-block">&nbsp;</label>
-                    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
-                </div>
-            </form>
-        </div>
-
         <!-- Tables Section -->
         <div class="row">
-            <!-- Trades Table -->
-            <div class="col-md-6">
-                <h3 class="text-center">ORDERS</h3>
-                <table class="table table-hover table-bordered">
+            <!-- Buy Orders Table -->
+            <div class="col-md-4">
+                <h3 class="text-center">BUY ORDERS</h3>
+                <table class="table table-hover table-bordered buy-orders">
                     <thead>
                         <tr>
-                            <th>#</th>
-                            <th>Trader ID</th>
-                            <th>Buy/Sell</th>
-                            <th>Limit Price</th>
+                            <th>Price</th>
                             <th>Quantity</th>
-                            <th>Time</th>
                         </tr>
                     </thead>
                     <tbody>
                         {% for trade in trades %}
-                        <tr>
-                            <td>{{ forloop.counter }}</td>
-                            <td>{{ trade.trader_id }}</td>
-                            <td>{{ trade.bs_type }}</td>
-                            <td>{{ trade.limit_price }}</td>
-                            <td>{{ trade.quantity }}</td>
-                            <td>{{ trade.time }}</td>
-                        </tr>
+                            {% if trade.bs_type == 'B' %}
+                            <tr>
+                                <td>{{ trade.limit_price }}</td>
+                                <td>{{ trade.quantity }}</td>
+                            </tr>
+                            {% endif %}
                         {% empty %}
                         <tr>
-                            <td colspan="6" class="text-center">No trades available.</td>
+                            <td colspan="2" class="text-center">No buy orders available.</td>
                         </tr>
                         {% endfor %}
                     </tbody>
                 </table>
             </div>
 
-            <!-- Trade Summaries Table -->
-            <div class="col-md-6">
-                <h3 class="text-center">TRADE LOG</h3>
-                <table class="table table-hover table-bordered">
+            <!-- Sell Orders Table -->
+            <div class="col-md-4">
+                <h3 class="text-center">SELL ORDERS</h3>
+                <table class="table table-hover table-bordered sell-orders">
+                    <thead>
+                        <tr>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for trade in trades %}
+                            {% if trade.bs_type == 'S' %}
+                            <tr>
+                                <td>{{ trade.limit_price }}</td>
+                                <td>{{ trade.quantity }}</td>
+                            </tr>
+                            {% endif %}
+                        {% empty %}
+                        <tr>
+                            <td colspan="2" class="text-center">No sell orders available.</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Trade Summary Section -->
+            <div class="col-md-4">
+                <h3 class="text-center">TRADE SUMMARY</h3>
+                <!-- Compact Filter just below heading -->
+                <div class="text-center mb-3">
+                    <select name="trader_id" id="trader_id" class="form-select d-inline-block w-auto" onchange="window.location.href=this.value;">
+                        <option value="All" {% if trader_filter == 'All' %}selected{% endif %}>All Traders</option>
+                        {% for trader_id in trader_ids %}
+                        <option value="?trader_id={{ trader_id }}" {% if trader_filter == trader_id %}selected{% endif %}>
+                            {{ trader_id }}
+                        </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <table class="table table-hover table-bordered trade-summary">
                     <thead>
                         <tr>
                             <th>Buy ID</th>
