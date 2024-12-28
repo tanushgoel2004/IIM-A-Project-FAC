@@ -96,7 +96,6 @@
                 <tr>
                     <th>S.No</th>
                     <th>Trader ID</th>
-                    <th>Trade Type</th>
                     <th>Buy/Sell</th>
                     <th>Limit Price</th>
                     <th>Quantity</th>
@@ -111,7 +110,6 @@
                     data-trader-id="{{ trade.trader_id }}">
                     <td>{{ trade.sno }}</td>
                     <td>{{ trade.trader_id }}</td>
-                    <td>{{ trade.trade_type }}</td>
                     <td>{{ trade.bs_type }}</td>
                     <td>{{ trade.limit_price }}</td>
                     <td>{{ trade.quantity }}</td>
@@ -122,32 +120,6 @@
         </table>
     </div>
 
-
-    <h3 class="mt-5">Trade Summaries</h3>
-<table class="table table-striped" id="trade-summary-table">
-    <thead>
-        <tr>
-            <th>S.No</th>
-            <th>Buy ID</th>
-            <th>Sell ID</th>
-            <th>Price</th>
-            <th>Quantity</th>
-            <th>Timestamp</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for summary in trade_summaries %}
-        <tr>
-            <td>{{ summary.sno }}</td>
-            <td>{{ summary.buy_id }}</td>
-            <td>{{ summary.sell_id }}</td>
-            <td>{{ summary.price }}</td>
-            <td>{{ summary.quantity }}</td>
-            <td>{{ summary.time }}</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
 
 
     <script>
